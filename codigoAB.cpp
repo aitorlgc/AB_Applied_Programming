@@ -1,6 +1,6 @@
-#include <iostream> // Biblioteca necesaria para poder entrar y sacar datos
-#include <string> // Biblioteca de manipulacion de texto
-#include <vector> // Biblioteca para manipulacion de listas
+#include <iostream>
+#include <string>
+#include <vector>
 // No se utiliza wiondows.h para que sea multisistema, por lo que el texto agregado no muestra tildes ni ciertos simbolos
 using namespace std;
 
@@ -24,10 +24,9 @@ public:
 class Paciente {
 public:
     int id;
-    
     string nombre;
     int edad;
-    Doctor* doctorAsociado;  // Puntero al doctor asociado
+    Doctor* doctorAsociado;
     vector<string> historialClinico;
 
     Paciente(int id, const string& nombre, int edad, Doctor* doctorAsociado)
@@ -103,30 +102,92 @@ public:
 // Funcion principal
 int main() {
     Hospital hospital;
+    int opcion;
 
-    // Agregar doctores al hospital
-    hospital.agregarDoctor(1, "Dr. Lopez", "Cardiologia");
-    hospital.agregarDoctor(2, "Dra. Garcia", "Pediatria");
+    do {
+        cout << "\nMenu del hospital:\n";
+        cout << "1. Agregar doctor\n";
+        cout << "2. Agregar paciente\n";
+        cout << "3. Mostrar doctores\n";
+        cout << "4. Mostrar pacientes\n";
+        cout << "5. Agregar historial clinico a un paciente\n";
+        cout << "6. Mostrar historial clinico de un paciente\n";
+        cout << "0. Salir\n";
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
 
-    // Agregar pacientes al hospital
-    hospital.agregarPaciente(101, "Juan Perez", 45, 1);
-    hospital.agregarPaciente(102, "Ana Martinez", 12, 2);
-
-    // Agregar historial clínico a un paciente
-    Paciente* paciente = hospital.encontrarPaciente(101);
-    if (paciente) {
-        paciente->agregarHistorial("Consulta inicial: dolor en el pecho.");
-        paciente->agregarHistorial("Diagnostico: arritmia cardiaca.");
-    }
-
-    // Mostrar informacion
-    hospital.mostrarDoctores();
-    hospital.mostrarPacientes();
-
-    // Mostrar historial clinico del paciente
-    if (paciente) {
-        paciente->mostrarHistorial();
-    }
+        switch (opcion) {
+        case 1: {
+            int id;
+            string nombre, especialidad;
+            cout << "ID del doctor: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Nombre del doctor: ";
+            getline(cin, nombre);
+            cout << "Especialidad: ";
+            getline(cin, especialidad);
+            hospital.agregarDoctor(id, nombre, especialidad);
+            break;
+        }
+        case 2: {
+            int id, edad, idDoctor;
+            string nombre;
+            cout << "ID del paciente: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Nombre del paciente: ";
+            getline(cin, nombre);
+            cout << "Edad del paciente: ";
+            cin >> edad;
+            cout << "ID del doctor asociado: ";
+            cin >> idDoctor;
+            hospital.agregarPaciente(id, nombre, edad, idDoctor);
+            break;
+        }
+        case 3:
+            hospital.mostrarDoctores();
+            break;
+        case 4:
+            hospital.mostrarPacientes();
+            break;
+        case 5: {
+            int idPaciente;
+            string entrada;
+            cout << "ID del paciente: ";
+            cin >> idPaciente;
+            cin.ignore();
+            cout << "Entrada para el historial clinico: ";
+            getline(cin, entrada);
+            Paciente* paciente = hospital.encontrarPaciente(idPaciente);
+            if (paciente) {
+                paciente->agregarHistorial(entrada);
+                cout << "Historial actualizado.\n";
+            } else {
+                cout << "Paciente no encontrado.\n";
+            }
+            break;
+        }
+        case 6: {
+            int idPaciente;
+            cout << "ID del paciente: ";
+            cin >> idPaciente;
+            Paciente* paciente = hospital.encontrarPaciente(idPaciente);
+            if (paciente) {
+                paciente->mostrarHistorial();
+            } else {
+                cout << "Paciente no encontrado.\n";
+            }
+            break;
+        }
+        case 0:
+            cout << "Saliendo del programa...\n";
+            break;
+        default:
+            cout << "Opcion no valida.\n";
+            break;
+        }
+    } while (opcion != 0);
 
     return 0;
 }

@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Depurar C++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/programa",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb", // Cambia esto si estás en Windows con MinGW
+            "setupCommands": [
+                {
+                    "description": "Habilitar impresión de formato adecuado para C++",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

@@ -1,53 +1,147 @@
 #include <iostream>
-#include "Hospital.h"
+#include <string>
+#include <vector>
+// No se utiliza wiondows.h para que sea multisistema, por lo que el texto agregado no muestra tildes ni ciertos simbolos
+using namespace std;
 
-int main()
-{
+// Clase Doctor
+class Doctor {
+public:
+    int id;
+    string nombre;
+    string especialidad;
+
+    Doctor(int id, const string& nombre, const string& especialidad)
+        : id(id), nombre(nombre), especialidad(especialidad) {}
+
+    void mostrarInfo() const {
+        cout << "ID Doctor: " << id << "\nNombre: " << nombre
+             << "\nEspecialidad: " << especialidad << endl;
+    }
+};
+
+// Clase Paciente
+class Paciente {
+public:
+    int id;
+    string nombre;
+    int edad;
+    Doctor* doctorAsociado;
+    vector<string> historialClinico;
+
+    Paciente(int id, const string& nombre, int edad, Doctor* doctorAsociado)
+        : id(id), nombre(nombre), edad(edad), doctorAsociado(doctorAsociado) {}
+
+    void agregarHistorial(const string& entrada) {
+        historialClinico.push_back(entrada);
+    }
+
+    void mostrarHistorial() const {
+        cout << "Historial clinico de " << nombre << ":\n";
+        for (const string& entrada : historialClinico) {
+            cout << "- " << entrada << endl;
+        }
+    }
+
+    void mostrarInfo() const {
+        cout << "ID Paciente: " << id << "\nNombre: " << nombre
+             << "\nEdad: " << edad << "\nDoctor Asociado: " << doctorAsociado->nombre << endl;
+    }
+};
+
+// Clase Hospital
+class Hospital {
+public:
+    vector<Doctor> doctores;
+    vector<Paciente> pacientes;
+
+    void agregarDoctor(int id, const string& nombre, const string& especialidad) {
+        doctores.emplace_back(id, nombre, especialidad);
+    }
+
+    void agregarPaciente(int id, const string& nombre, int edad, int idDoctor) {
+        Doctor* doctor = encontrarDoctor(idDoctor);
+        if (doctor) {
+            pacientes.emplace_back(id, nombre, edad, doctor);
+        } else {
+            cout << "Doctor con ID " << idDoctor << " no encontrado." << endl;
+        }
+    }
+
+    Doctor* encontrarDoctor(int id) {
+        for (auto& doctor : doctores) {
+            if (doctor.id == id) return &doctor;
+        }
+        return nullptr;
+    }
+
+    Paciente* encontrarPaciente(int id) {
+        for (auto& paciente : pacientes) {
+            if (paciente.id == id) return &paciente;
+        }
+        return nullptr;
+    }
+
+    void mostrarDoctores() const {
+        cout << "Lista de doctores:\n";
+        for (const auto& doctor : doctores) {
+            doctor.mostrarInfo();
+            cout << endl;
+        }
+    }
+
+    void mostrarPacientes() const {
+        cout << "Lista de pacientes:\n";
+        for (const auto& paciente : pacientes) {
+            paciente.mostrarInfo();
+            cout << endl;
+        }
+    }
+};
+
+// Funcion principal
+int main() {
     Hospital hospital;
     int opcion;
 
-    do
-    {
-        std::cout << "\nMenu del hospital:\n";
-        std::cout << "1. Agregar doctor\n";
-        std::cout << "2. Agregar paciente\n";
-        std::cout << "3. Mostrar doctores\n";
-        std::cout << "4. Mostrar pacientes\n";
-        std::cout << "5. Agregar historial clinico a un paciente\n";
-        std::cout << "6. Mostrar historial clinico de un paciente\n";
-        std::cout << "0. Salir\n";
-        std::cout << "Seleccione una opcion: ";
-        std::cin >> opcion;
+    do {
+        cout << "\nMenu del hospital:\n";
+        cout << "1. Agregar doctor\n";
+        cout << "2. Agregar paciente\n";
+        cout << "3. Mostrar doctores\n";
+        cout << "4. Mostrar pacientes\n";
+        cout << "5. Agregar historial clinico a un paciente\n";
+        cout << "6. Mostrar historial clinico de un paciente\n";
+        cout << "0. Salir\n";
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
 
-        switch (opcion)
-        {
-        case 1:
-        {
+        switch (opcion) {
+        case 1: {
             int id;
-            std::string nombre, especialidad;
-            std::cout << "ID del doctor: ";
-            std::cin >> id;
-            std::cin.ignore();
-            std::cout << "Nombre del doctor: ";
-            getline(std::cin, nombre);
-            std::cout << "Especialidad: ";
-            getline(std::cin, especialidad);
+            string nombre, especialidad;
+            cout << "ID del doctor: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Nombre del doctor: ";
+            getline(cin, nombre);
+            cout << "Especialidad: ";
+            getline(cin, especialidad);
             hospital.agregarDoctor(id, nombre, especialidad);
             break;
         }
-        case 2:
-        {
+        case 2: {
             int id, edad, idDoctor;
-            std::string nombre;
-            std::cout << "ID del paciente: ";
-            std::cin >> id;
-            std::cin.ignore();
-            std::cout << "Nombre del paciente: ";
-            getline(std::cin, nombre);
-            std::cout << "Edad del paciente: ";
-            std::cin >> edad;
-            std::cout << "ID del doctor asociado: ";
-            std::cin >> idDoctor;
+            string nombre;
+            cout << "ID del paciente: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Nombre del paciente: ";
+            getline(cin, nombre);
+            cout << "Edad del paciente: ";
+            cin >> edad;
+            cout << "ID del doctor asociado: ";
+            cin >> idDoctor;
             hospital.agregarPaciente(id, nombre, edad, idDoctor);
             break;
         }
@@ -57,48 +151,40 @@ int main()
         case 4:
             hospital.mostrarPacientes();
             break;
-        case 5:
-        {
+        case 5: {
             int idPaciente;
-            std::string entrada;
-            std::cout << "ID del paciente: ";
-            std::cin >> idPaciente;
-            std::cin.ignore();
-            std::cout << "Entrada para el historial clinico: ";
-            getline(std::cin, entrada);
-            Paciente *paciente = hospital.encontrarPaciente(idPaciente);
-            if (paciente)
-            {
+            string entrada;
+            cout << "ID del paciente: ";
+            cin >> idPaciente;
+            cin.ignore();
+            cout << "Entrada para el historial clinico: ";
+            getline(cin, entrada);
+            Paciente* paciente = hospital.encontrarPaciente(idPaciente);
+            if (paciente) {
                 paciente->agregarHistorial(entrada);
-                std::cout << "Historial actualizado.\n";
-            }
-            else
-            {
-                std::cout << "Paciente no encontrado.\n";
+                cout << "Historial actualizado.\n";
+            } else {
+                cout << "Paciente no encontrado.\n";
             }
             break;
         }
-        case 6:
-        {
+        case 6: {
             int idPaciente;
-            std::cout << "ID del paciente: ";
-            std::cin >> idPaciente;
-            Paciente *paciente = hospital.encontrarPaciente(idPaciente);
-            if (paciente)
-            {
+            cout << "ID del paciente: ";
+            cin >> idPaciente;
+            Paciente* paciente = hospital.encontrarPaciente(idPaciente);
+            if (paciente) {
                 paciente->mostrarHistorial();
-            }
-            else
-            {
-                std::cout << "Paciente no encontrado.\n";
+            } else {
+                cout << "Paciente no encontrado.\n";
             }
             break;
         }
         case 0:
-            std::cout << "Saliendo del programa...\n";
+            cout << "Saliendo del programa...\n";
             break;
         default:
-            std::cout << "Opcion no valida.\n";
+            cout << "Opcion no valida.\n";
             break;
         }
     } while (opcion != 0);

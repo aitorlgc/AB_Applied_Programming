@@ -1,0 +1,10 @@
+^C:\USERS\AALGU\DESKTOP\MSMK - 1-1\2\APPLIED PROGRAMMING\ENTREGABLES\AB FINAL\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final" "-BC:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build" --check-stamp-file "C:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

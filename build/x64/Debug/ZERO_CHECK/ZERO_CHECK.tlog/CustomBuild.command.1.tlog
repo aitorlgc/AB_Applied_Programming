@@ -1,0 +1,10 @@
+^C:\USERS\AALGU\DESKTOP\MSMK - 1-1\2\APPLIED PROGRAMMING\ENTREGABLES\AB FINAL\BUILD\CMAKEFILES\1BDCCF04B05A8B4CFAF0692B7D76931F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final" "-BC:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build/ProyectoHospital.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

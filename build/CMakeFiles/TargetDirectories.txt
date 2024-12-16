@@ -1,0 +1,3 @@
+C:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build/CMakeFiles/ProyectoHospital.dir
+C:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/aalgu/Desktop/MSMK - 1-1/2/Applied Programming/Entregables/AB final/build/CMakeFiles/ZERO_CHECK.dir

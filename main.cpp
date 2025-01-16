@@ -351,7 +351,7 @@ int main() {
                 cin >> edad;
                 cout << "Ingrese el ID del doctor: ";
                 cin >> idDoctor;
-                cout << "Ingrese la fecha de ingreso (dd-mm-yyyy): ";
+                cout << "Ingrese la fecha de ingreso (DD-MM-YYYY): ";
                 cin.ignore();
                 getline(cin, fechaIngreso);
                 hospital.agregarPaciente(id, nombre, edad, idDoctor, fechaIngreso);
@@ -367,7 +367,7 @@ int main() {
                 cin >> idPaciente;
                 cout << "Ingrese el ID del doctor: ";
                 cin >> idDoctor;
-                cout << "Ingrese la fecha de la cita (YYYY-MM-DD): ";
+                cout << "Ingrese la fecha de la cita (DD-MM-YYYY): ";
                 cin.ignore();
                 getline(cin, fecha);
                 cout << "Ingrese la hora de la cita (HH:MM): ";
@@ -413,7 +413,7 @@ int main() {
                 cin >> idPaciente;
                 cout << "Ingrese el nuevo ID del doctor: ";
                 cin >> idDoctor;
-                cout << "Ingrese la nueva fecha de la cita (YYYY-MM-DD): ";
+                cout << "Ingrese la nueva fecha de la cita (DD-MM-YYYY): ";
                 cin.ignore();
                 getline(cin, fecha);
                 cout << "Ingrese la nueva hora de la cita (HH:MM): ";

@@ -297,195 +297,261 @@ void mostrarCitas() {
              << ", Doctor ID: " << cita.idDoctor << ", Fecha: " << cita.fecha << ", Hora: " << cita.hora << endl;
     }
 }
+void menuPrincipal() {
+        int opcion;
+        do {
+            cout << "\nMenu Principal:\n";
+            cout << "1. Gestion de doctores\n";
+            cout << "2. Gestion de pacientes\n";
+            cout << "3. Gestion de citas\n";
+            cout << "4. Realizar backup\n";
+            cout << "5. Salir\n";
+            cout << "Elija una opcion: ";
+            cin >> opcion;
+
+            switch (opcion) {
+                case 1:
+                    menuDoctores();
+                    break;
+                case 2:
+                    menuPacientes();
+                    break;
+                case 3:
+                    menuCitas();
+                    break;
+                case 4:
+                    guardarBackup();
+                    break;
+                case 5:
+                    cout << "Saliendo...\n";
+                    break;
+                default:
+                    cout << "Opcion invalida, intente de nuevo.\n";
+            }
+        } while (opcion != 5);
+    }
+
+    void menuDoctores() {
+        int opcion;
+        do {
+            cout << "\nGestion de doctores:\n";
+            cout << "1. Agregar doctor\n";
+            cout << "2. Modificar doctor\n";
+            cout << "3. Eliminar doctor\n";
+            cout << "4. Buscar doctor\n";
+            cout << "5. Mostrar todos los doctores\n";
+            cout << "6. Volver al menu principal\n";
+            cout << "Elija una opcion: ";
+            cin >> opcion;
+
+            switch (opcion) {
+                case 1: {
+                    int id;
+                    string nombre, especialidad;
+                    cout << "Ingrese el ID del doctor: ";
+                    cin >> id;
+                    cout << "Ingrese el nombre del doctor: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    cout << "Ingrese la especialidad del doctor: ";
+                    getline(cin, especialidad);
+                    agregarDoctor(id, nombre, especialidad);
+                    break;
+                }
+                case 2: {
+                    int id;
+                    string nombre, especialidad;
+                    cout << "Ingrese el ID del doctor a modificar: ";
+                    cin >> id;
+                    cout << "Ingrese el nuevo nombre del doctor: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    cout << "Ingrese la nueva especialidad del doctor: ";
+                    getline(cin, especialidad);
+                    modificarDoctor(id, nombre, especialidad);
+                    break;
+                }
+                case 3: {
+                    int id;
+                    cout << "Ingrese el ID del doctor a eliminar: ";
+                    cin >> id;
+                    eliminarDoctor(id);
+                    break;
+                }
+                case 4: {
+                    string nombre;
+                    cout << "Ingrese el nombre del doctor a buscar: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    buscarDoctor(nombre);
+                    break;
+                }
+                case 5:
+                    mostrarDoctores();
+                    break;
+                case 6:
+                    cout << "Volviendo al menu principal...\n";
+                    break;
+                default:
+                    cout << "Opcion invalida, intente de nuevo.\n";
+            }
+        } while (opcion != 6);
+    }
+
+    void menuPacientes() {
+        int opcion;
+        do {
+            cout << "\nGestion de pacientes:\n";
+            cout << "1. Agregar paciente\n";
+            cout << "2. Modificar paciente\n";
+            cout << "3. Eliminar paciente\n";
+            cout << "4. Buscar paciente\n";
+            cout << "5. Mostrar todos los pacientes\n";
+            cout << "6. Volver al menu principal\n";
+            cout << "Elija una opcion: ";
+            cin >> opcion;
+
+            switch (opcion) {
+                case 1: {
+                    int id, edad, idDoctor;
+                    string nombre, fechaIngreso;
+                    cout << "Ingrese el ID del paciente: ";
+                    cin >> id;
+                    cout << "Ingrese el nombre del paciente: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    cout << "Ingrese la edad del paciente: ";
+                    cin >> edad;
+                    cout << "Ingrese el ID del doctor asociado: ";
+                    cin >> idDoctor;
+                    cout << "Ingrese la fecha de ingreso (DD-MM-YYYY): ";
+                    cin.ignore();
+                    getline(cin, fechaIngreso);
+                    agregarPaciente(id, nombre, edad, idDoctor, fechaIngreso);
+                    break;
+                }
+                case 2: {
+                    int id, edad, idDoctor;
+                    string nombre, fechaIngreso;
+                    cout << "Ingrese el ID del paciente a modificar: ";
+                    cin >> id;
+                    cout << "Ingrese el nuevo nombre del paciente: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    cout << "Ingrese la nueva edad del paciente: ";
+                    cin >> edad;
+                    cout << "Ingrese el nuevo ID del doctor asociado: ";
+                    cin >> idDoctor;
+                    cout << "Ingrese la nueva fecha de ingreso (DD-MM-YYYY): ";
+                    cin.ignore();
+                    getline(cin, fechaIngreso);
+                    modificarPaciente(id, nombre, edad, idDoctor, fechaIngreso);
+                    break;
+                }
+                case 3: {
+                    int id;
+                    cout << "Ingrese el ID del paciente a eliminar: ";
+                    cin >> id;
+                    eliminarPaciente(id);
+                    break;
+                }
+                case 4: {
+                    string nombre;
+                    cout << "Ingrese el nombre del paciente a buscar: ";
+                    cin.ignore();
+                    getline(cin, nombre);
+                    buscarPaciente(nombre);
+                    break;
+                }
+                case 5:
+                    mostrarPacientes();
+                    break;
+                case 6:
+                    cout << "Volviendo al menu principal...\n";
+                    break;
+                default:
+                    cout << "Opción invalida, intente de nuevo.\n";
+            }
+        } while (opcion != 6);
+    }
+
+    void menuCitas() {
+        int opcion;
+        do {
+            cout << "\nGestion de citas:\n";
+            cout << "1. Agregar cita\n";
+            cout << "2. Modificar cita\n";
+            cout << "3. Eliminar cita\n";
+            cout << "4. Buscar cita\n";
+            cout << "5. Mostrar todas las citas\n";
+            cout << "6. Volver al menu principal\n";
+            cout << "Elija una opcion: ";
+            cin >> opcion;
+
+            switch (opcion) {
+                case 1: {
+                    int idCita, idPaciente, idDoctor;
+                    string fecha, hora;
+                    cout << "Ingrese el ID de la cita: ";
+                    cin >> idCita;
+                    cout << "Ingrese el ID del paciente: ";
+                    cin >> idPaciente;
+                    cout << "Ingrese el ID del doctor: ";
+                    cin >> idDoctor;
+                    cout << "Ingrese la fecha de la cita (DD-MM-YYYY): ";
+                    cin.ignore();
+                    getline(cin, fecha);
+                    cout << "Ingrese la hora de la cita (HH:MM): ";
+                    getline(cin, hora);
+                    agregarCita(idCita, idPaciente, idDoctor, fecha, hora);
+                    break;
+                }
+                case 2: {
+                    int idCita, idPaciente, idDoctor;
+                    string fecha, hora;
+                    cout << "Ingrese el ID de la cita a modificar: ";
+                    cin >> idCita;
+                    cout << "Ingrese el nuevo ID del paciente: ";
+                    cin >> idPaciente;
+                    cout << "Ingrese el nuevo ID del doctor: ";
+                    cin >> idDoctor;
+                    cout << "Ingrese la nueva fecha de la cita (DD-MM-YYYY): ";
+                    cin.ignore();
+                    getline(cin, fecha);
+                    cout << "Ingrese la nueva hora de la cita (HH:MM): ";
+                    getline(cin, hora);
+                    modificarCita(idCita, idPaciente, idDoctor, fecha, hora);
+                    break;
+                }
+                case 3: {
+                    int idCita;
+                    cout << "Ingrese el ID de la cita a eliminar: ";
+                    cin >> idCita;
+                    eliminarCita(idCita);
+                    break;
+                }
+                case 4: {
+                    int idCita;
+                    cout << "Ingrese el ID de la cita a buscar: ";
+                    cin >> idCita;
+                    buscarCita(idCita);
+                    break;
+                }
+                case 5:
+                    mostrarCitas();
+                    break;
+                case 6:
+                    cout << "Volviendo al menu principal...\n";
+                    break;
+                default:
+                    cout << "Opcion invalida, intente de nuevo.\n";
+            }
+        } while (opcion != 6);
+    }
 };
 
 int main() {
     Hospital hospital;
-
-    int opcion;
-    do {
-        cout << "\nMenu:\n";
-        cout << "1. Agregar Doctor\n";
-        cout << "2. Agregar Paciente\n";
-        cout << "3. Agregar Cita\n";
-        cout << "4. Modificar Doctor\n";
-        cout << "5. Modificar Paciente\n";
-        cout << "6. Modificar Cita\n";
-        cout << "7. Eliminar Doctor\n";
-        cout << "8. Eliminar Paciente\n";
-        cout << "9. Eliminar Cita\n";
-        cout << "10. Buscar Doctor\n";
-        cout << "11. Buscar Paciente\n";
-        cout << "12. Buscar Cita\n";
-        cout << "13. Mostrar Todos los Doctores\n";
-        cout << "14. Mostrar Todos los Pacientes\n";
-        cout << "15. Mostrar Todas las Citas\n";
-        cout << "16. Realizar Backup\n";
-        cout << "17. Salir\n";
-        cout << "Elija una opcion: ";
-        cin >> opcion;
-
-        switch (opcion) {
-            case 1: {
-                int id;
-                string nombre, especialidad;
-                cout << "Ingrese el ID del doctor: ";
-                cin >> id;
-                cout << "Ingrese el nombre del doctor: ";
-                cin.ignore();
-                getline(cin, nombre);
-                cout << "Ingrese la especialidad del doctor: ";
-                getline(cin, especialidad);
-                hospital.agregarDoctor(id, nombre, especialidad);
-                break;
-            }
-            case 2: {
-                int id, edad, idDoctor;
-                string nombre, fechaIngreso;
-                cout << "Ingrese el ID del paciente: ";
-                cin >> id;
-                cout << "Ingrese el nombre del paciente: ";
-                cin.ignore();
-                getline(cin, nombre);
-                cout << "Ingrese la edad del paciente: ";
-                cin >> edad;
-                cout << "Ingrese el ID del doctor: ";
-                cin >> idDoctor;
-                cout << "Ingrese la fecha de ingreso (DD-MM-YYYY): ";
-                cin.ignore();
-                getline(cin, fechaIngreso);
-                hospital.agregarPaciente(id, nombre, edad, idDoctor, fechaIngreso);
-                break;
-            }
-
-            case 3: {
-                int idCita, idPaciente, idDoctor;
-                string fecha, hora;
-                cout << "Ingrese el ID de la cita: ";
-                cin >> idCita;
-                cout << "Ingrese el ID del paciente: ";
-                cin >> idPaciente;
-                cout << "Ingrese el ID del doctor: ";
-                cin >> idDoctor;
-                cout << "Ingrese la fecha de la cita (DD-MM-YYYY): ";
-                cin.ignore();
-                getline(cin, fecha);
-                cout << "Ingrese la hora de la cita (HH:MM): ";
-                getline(cin, hora);
-                hospital.agregarCita(idCita, idPaciente, idDoctor, fecha, hora);
-                break;
-            }
-            case 4: {
-                int id;
-                string nombre, especialidad;
-                cout << "Ingrese el ID del doctor a modificar: ";
-                cin >> id;
-                cout << "Ingrese el nuevo nombre del doctor: ";
-                cin.ignore();
-                getline(cin, nombre);
-                cout << "Ingrese la nueva especialidad del doctor: ";
-                getline(cin, especialidad);
-                hospital.modificarDoctor(id, nombre, especialidad);
-                break;
-            }
-            case 5: {
-                int id, edad, idDoctor;
-                string nombre, fechaIngreso;
-                cout << "Ingrese el ID del paciente a modificar: ";
-                cin >> id;
-                cout << "Ingrese el nuevo nombre del paciente: ";
-                cin.ignore();
-                getline(cin, nombre);
-                cout << "Ingrese la nueva edad del paciente: ";
-                cin >> edad;
-                cout << "Ingrese el nuevo ID del doctor: ";
-                cin >> idDoctor;
-                
-                hospital.modificarPaciente(id, nombre, edad, idDoctor, fechaIngreso);
-                break;
-            }
-            case 6: {
-                int idCita, idPaciente, idDoctor;
-                string fecha, hora;
-                cout << "Ingrese el ID de la cita a modificar: ";
-                cin >> idCita;
-                cout << "Ingrese el nuevo ID del paciente: ";
-                cin >> idPaciente;
-                cout << "Ingrese el nuevo ID del doctor: ";
-                cin >> idDoctor;
-                cout << "Ingrese la nueva fecha de la cita (DD-MM-YYYY): ";
-                cin.ignore();
-                getline(cin, fecha);
-                cout << "Ingrese la nueva hora de la cita (HH:MM): ";
-                getline(cin, hora);
-                hospital.modificarCita(idCita, idPaciente, idDoctor, fecha, hora);
-                break;
-            }
-            case 7: {
-                int id;
-                cout << "Ingrese el ID del doctor a eliminar: ";
-                cin >> id;
-                hospital.eliminarDoctor(id);
-                break;
-            }
-            case 8: {
-                int id;
-                cout << "Ingrese el ID del paciente a eliminar: ";
-                cin >> id;
-                hospital.eliminarPaciente(id);
-                break;
-            }
-            case 9: {
-                int idCita;
-                cout << "Ingrese el ID de la cita a eliminar: ";
-                cin >> idCita;
-                hospital.eliminarCita(idCita);
-                break;
-            }
-            case 10: {
-                string nombreDoctor;
-                cout << "Ingrese el nombre del doctor a buscar: ";
-                cin.ignore();
-                getline(cin, nombreDoctor);
-                hospital.buscarDoctor(nombreDoctor);
-                break;
-            }
-            case 11: {
-                string nombrePaciente;
-                cout << "Ingrese el nombre del paciente a buscar: ";
-                cin.ignore();
-                getline(cin, nombrePaciente);
-                hospital.buscarPaciente(nombrePaciente);
-                break;
-            }
-            case 12: {
-                int idCita;
-                cout << "Ingrese el ID de la cita a buscar: ";
-                cin >> idCita;
-                hospital.buscarCita(idCita);
-                break;
-            }
-            case 13: {
-                hospital.mostrarDoctores();
-                break;
-            }
-            case 14: {
-                hospital.mostrarPacientes();
-                break;
-            }
-            case 15: {
-                hospital.mostrarCitas();
-                break;
-            }
-            case 16:
-                hospital.guardarBackup();
-                break;
-            case 17:
-                cout << "Saliendo...\n";
-                break;
-            default:
-                cout << "Opción inválida, intente de nuevo.\n";
-        }
-    } while (opcion != 17);
+    hospital.menuPrincipal();
     return 0;
 }

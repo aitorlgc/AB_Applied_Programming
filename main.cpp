@@ -16,13 +16,21 @@ public:
         string especialidad;
     };
 
+    struct HistorialClinico
+    {
+        int idHistorial;
+        string fecha;
+        string descripcion;
+    };
+
     struct Paciente
     {
         int id;
         string nombre;
         int edad;
         int idDoctor;
-        string fechaIngreso; // Cambiar int a string
+        string fechaIngreso;
+        vector<HistorialClinico> historiales;
     };
 
     struct Cita
@@ -37,6 +45,7 @@ public:
     vector<Doctor> doctores;
     vector<Paciente> pacientes;
     vector<Cita> citas;
+    vector<HistorialClinico> historiales;
 
     // Funciones de gestión
     void agregarDoctor(int id, const string &nombre, const string &especialidad)
@@ -59,11 +68,13 @@ public:
 
     void agregarPaciente(int id, const string &nombre, int edad, int idDoctor, const string &fechaIngreso)
     {
-        if (existePaciente(id)) {
+        if (existePaciente(id))
+        {
             cout << "Error: El ID del paciente ya existe.\n";
             return;
         }
-        if (!existeDoctor(idDoctor)) {
+        if (!existeDoctor(idDoctor))
+        {
             cout << "Error: El ID del doctor asociado no existe.\n";
             return;
         }
@@ -78,17 +89,27 @@ public:
                       { return p.id == id; });
     }
 
+    void agregarHistorial(Paciente& paciente, int idHistorial, const string& fecha, const string& descripcion) 
+    {
+        paciente.historiales.push_back({idHistorial, fecha, descripcion});
+        cout << "Historial clinico agregado con exito.\n";
+        guardarBackup(); // Guardar cambios automáticamente
+    }
+
     void agregarCita(int idCita, int idPaciente, int idDoctor, const string &fecha, const string &hora)
     {
-        if (existeCita(idCita)) {
+        if (existeCita(idCita))
+        {
             cout << "Error: El ID de la cita ya existe.\n";
             return;
         }
-        if (!existePaciente(idPaciente)) {
+        if (!existePaciente(idPaciente))
+        {
             cout << "Error: El ID del paciente no existe.\n";
             return;
         }
-        if (!existeDoctor(idDoctor)) {
+        if (!existeDoctor(idDoctor))
+        {
             cout << "Error: El ID del doctor no existe.\n";
             return;
         }
@@ -97,8 +118,10 @@ public:
         guardarBackup(); // Guardar cambios automáticamente
     }
 
-bool existeCita(int idCita) {
-        return any_of(citas.begin(), citas.end(), [idCita](const Cita& c) { return c.idCita == idCita; });
+    bool existeCita(int idCita)
+    {
+        return any_of(citas.begin(), citas.end(), [idCita](const Cita &c)
+                      { return c.idCita == idCita; });
     }
 
     void modificarDoctor(int id, const string &nombre, const string &especialidad)
@@ -134,6 +157,19 @@ bool existeCita(int idCita) {
         }
         cout << "Paciente no encontrado.\n";
     }
+
+    void modificarHistorial(Paciente& paciente, int idHistorial, const string& nuevaFecha, const string& nuevaDescripcion) {
+    for (auto& historial : paciente.historiales) {
+        if (historial.idHistorial == idHistorial) {
+            historial.fecha = nuevaFecha;
+            historial.descripcion = nuevaDescripcion;
+            cout << "Historial clinico actualizado con exito.\n";
+            return;
+        }
+    }
+    cout << "Historial clinico no encontrado.\n";
+}
+
 
     void modificarCita(int idCita, int idPaciente, int idDoctor, const string &fecha, const string &hora)
     {
@@ -185,6 +221,17 @@ bool existeCita(int idCita) {
         }
     }
 
+void eliminarHistorial(Paciente& paciente, int idHistorial) {
+    auto it = remove_if(paciente.historiales.begin(), paciente.historiales.end(),
+                        [idHistorial](const HistorialClinico& h) { return h.idHistorial == idHistorial; });
+    if (it != paciente.historiales.end()) {
+        paciente.historiales.erase(it, paciente.historiales.end());
+        cout << "Historial clinico eliminado con exito.\n";
+    } else {
+        cout << "Historial clinico no encontrado.\n";
+    }
+}
+
     void eliminarCita(int idCita)
     {
         auto it = remove_if(citas.begin(), citas.end(), [idCita](const Cita &c)
@@ -215,6 +262,15 @@ bool existeCita(int idCita) {
         {
             archivoPacientes << paciente.id << "," << paciente.nombre << "," << paciente.edad << "," << paciente.idDoctor << "," << paciente.fechaIngreso << "\n";
         }
+
+        ofstream archivoHistorial("historial_backup.txt");
+    for (const auto &paciente : pacientes)
+    {
+        for (const auto &historial : paciente.historiales)
+        {
+            archivoHistorial << paciente.id << "," << historial.idHistorial << "," << historial.fecha << "," << historial.descripcion << "\n";
+        }
+    }
 
         ofstream archivoCitas("citas_backup.txt");
         for (const auto &cita : citas)
@@ -395,6 +451,19 @@ bool existeCita(int idCita) {
         }
     }
 
+void mostrarHistoriales(const Paciente& paciente) {
+    if (paciente.historiales.empty()) {
+        cout << "No hay historiales clinicos para este paciente.\n";
+        return;
+    }
+    cout << "Historiales clinicos del paciente " << paciente.nombre << ":\n";
+    for (const auto& historial : paciente.historiales) {
+        cout << "ID: " << historial.idHistorial
+             << ", Fecha: " << historial.fecha
+             << ", Descripcion: " << historial.descripcion << '\n';
+    }
+}
+
     void mostrarCitas()
     {
         cargarCitas();
@@ -526,7 +595,8 @@ bool existeCita(int idCita) {
             cout << "3. Eliminar paciente\n";
             cout << "4. Buscar paciente\n";
             cout << "5. Mostrar todos los pacientes\n";
-            cout << "6. Volver al menu principal\n";
+            cout << "6. Gestionar historiales clinicos de un paciente\n";
+            cout << "7. Volver al menu principal\n";
             cout << "Elija una opcion: ";
             cin >> opcion;
 
@@ -590,14 +660,86 @@ bool existeCita(int idCita) {
             case 5:
                 mostrarPacientes();
                 break;
-            case 6:
+            case 6: {
+                int id;
+                cout << "Ingrese el ID del paciente: ";
+                cin >> id;
+                auto it = find_if(pacientes.begin(), pacientes.end(),
+                                [id](const Paciente& p) { return p.id == id; });
+                if (it != pacientes.end()) {
+                    menuHistoriales(*it);
+                } else {
+                    cout << "Paciente no encontrado.\n";
+                }
+                break;
+            }
+            case 7:
                 cout << "Volviendo al menu principal...\n";
                 break;
             default:
                 cout << "Opción invalida, intente de nuevo.\n";
             }
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
+
+void menuHistoriales(Paciente& paciente) {
+    int opcion;
+    do {
+        cout << "\nGestion de historiales clinicos para el paciente: " << paciente.nombre << "\n";
+        cout << "1. Crear historial clinico\n";
+        cout << "2. Mostrar historiales clinicos\n";
+        cout << "3. Modificar historial clinico\n";
+        cout << "4. Eliminar historial clinico\n";
+        cout << "5. Volver al menu de pacientes\n";
+        cout << "Elija una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1: {
+            int idHistorial;
+            string fecha, descripcion;
+            cout << "Ingrese el ID del historial: ";
+            cin >> idHistorial;
+            cout << "Ingrese la fecha (DD-MM-YYYY): ";
+            cin.ignore();
+            getline(cin, fecha);
+            cout << "Ingrese la descripcion del historial: ";
+            getline(cin, descripcion);
+            agregarHistorial(paciente, idHistorial, fecha, descripcion);
+            break;
+        }
+        case 2:
+            mostrarHistoriales(paciente);
+            break;
+        case 3: {
+            int idHistorial;
+            string nuevaFecha, nuevaDescripcion;
+            cout << "Ingrese el ID del historial a modificar: ";
+            cin >> idHistorial;
+            cout << "Ingrese la nueva fecha (DD-MM-YYYY): ";
+            cin.ignore();
+            getline(cin, nuevaFecha);
+            cout << "Ingrese la nueva descripcion: ";
+            getline(cin, nuevaDescripcion);
+            modificarHistorial(paciente, idHistorial, nuevaFecha, nuevaDescripcion);
+            break;
+        }
+        case 4: {
+            int idHistorial;
+            cout << "Ingrese el ID del historial a eliminar: ";
+            cin >> idHistorial;
+            eliminarHistorial(paciente, idHistorial);
+            break;
+        }
+        case 5:
+            cout << "Volviendo al menu de pacientes...\n";
+            break;
+        default:
+            cout << "Opcion invalida, intente de nuevo.\n";
+        }
+    } while (opcion != 5);
+}
+
 
     void menuCitas()
     {
@@ -683,6 +825,8 @@ bool existeCita(int idCita) {
 
 int main()
 {
+    cout << "Bienvenido al sistema de gestion hospitalaria de MSMK AAM\n";
+    cout << "============================================\n";
     Hospital hospital;
     hospital.menuPrincipal();
     return 0;

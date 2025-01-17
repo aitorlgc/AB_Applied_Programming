@@ -483,7 +483,7 @@ void mostrarHistoriales(const Paciente& paciente) {
             cout << "2. Gestion de pacientes\n";
             cout << "3. Gestion de citas\n";
             cout << "4. Realizar backup\n";
-            cout << "5. Salir\n";
+            cout << "0. Salir\n";
             cout << "Elija una opcion: ";
             cin >> opcion;
 
@@ -501,13 +501,13 @@ void mostrarHistoriales(const Paciente& paciente) {
             case 4:
                 guardarBackup();
                 break;
-            case 5:
+            case 0:
                 cout << "Saliendo...\n";
                 break;
             default:
                 cout << "Opcion invalida, intente de nuevo.\n";
             }
-        } while (opcion != 5);
+        } while (opcion != 0);
     }
 
     void menuDoctores()
@@ -521,7 +521,7 @@ void mostrarHistoriales(const Paciente& paciente) {
             cout << "3. Eliminar doctor\n";
             cout << "4. Buscar doctor\n";
             cout << "5. Mostrar todos los doctores\n";
-            cout << "6. Volver al menu principal\n";
+            cout << "0. Volver al menu principal\n";
             cout << "Elija una opcion: ";
             cin >> opcion;
 
@@ -575,13 +575,13 @@ void mostrarHistoriales(const Paciente& paciente) {
             case 5:
                 mostrarDoctores();
                 break;
-            case 6:
+            case 0:
                 cout << "Volviendo al menu principal...\n";
                 break;
             default:
                 cout << "Opcion invalida, intente de nuevo.\n";
             }
-        } while (opcion != 6);
+        } while (opcion != 0);
     }
 
     void menuPacientes()
@@ -596,7 +596,7 @@ void mostrarHistoriales(const Paciente& paciente) {
             cout << "4. Buscar paciente\n";
             cout << "5. Mostrar todos los pacientes\n";
             cout << "6. Gestionar historiales clinicos de un paciente\n";
-            cout << "7. Volver al menu principal\n";
+            cout << "0. Volver al menu principal\n";
             cout << "Elija una opcion: ";
             cin >> opcion;
 
@@ -673,13 +673,13 @@ void mostrarHistoriales(const Paciente& paciente) {
                 }
                 break;
             }
-            case 7:
+            case 0:
                 cout << "Volviendo al menu principal...\n";
                 break;
             default:
                 cout << "Opción invalida, intente de nuevo.\n";
             }
-        } while (opcion != 7);
+        } while (opcion != 0);
     }
 
 void menuHistoriales(Paciente& paciente) {
@@ -690,7 +690,7 @@ void menuHistoriales(Paciente& paciente) {
         cout << "2. Mostrar historiales clinicos\n";
         cout << "3. Modificar historial clinico\n";
         cout << "4. Eliminar historial clinico\n";
-        cout << "5. Volver al menu de pacientes\n";
+        cout << "0. Volver al menu de pacientes\n";
         cout << "Elija una opcion: ";
         cin >> opcion;
 
@@ -731,13 +731,13 @@ void menuHistoriales(Paciente& paciente) {
             eliminarHistorial(paciente, idHistorial);
             break;
         }
-        case 5:
+        case 0:
             cout << "Volviendo al menu de pacientes...\n";
             break;
         default:
             cout << "Opcion invalida, intente de nuevo.\n";
         }
-    } while (opcion != 5);
+    } while (opcion != 0);
 }
 
 
@@ -752,7 +752,7 @@ void menuHistoriales(Paciente& paciente) {
             cout << "3. Eliminar cita\n";
             cout << "4. Buscar cita\n";
             cout << "5. Mostrar todas las citas\n";
-            cout << "6. Volver al menu principal\n";
+            cout << "0. Volver al menu principal\n";
             cout << "Elija una opcion: ";
             cin >> opcion;
 
@@ -813,13 +813,13 @@ void menuHistoriales(Paciente& paciente) {
             case 5:
                 mostrarCitas();
                 break;
-            case 6:
+            case 0:
                 cout << "Volviendo al menu principal...\n";
                 break;
             default:
                 cout << "Opcion invalida, intente de nuevo.\n";
             }
-        } while (opcion != 6);
+        } while (opcion != 0);
     }
 };
 

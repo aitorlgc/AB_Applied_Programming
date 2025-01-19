@@ -364,36 +364,64 @@ void eliminarHistorial(Paciente& paciente, int idHistorial) {
     }
 
     // Función para cargar datos desde el archivo de pacientes
-    void cargarPacientes()
-    {
-        ifstream archivoPacientes("pacientes_backup.txt");
-        pacientes.clear();
-        if (archivoPacientes.is_open())
-        {
+    void cargarPacientes() {
+    ifstream archivoPacientes("pacientes_backup.txt");
+    pacientes.clear();
+    if (archivoPacientes.is_open()) {
+        string linea;
+        while (getline(archivoPacientes, linea)) {
+            int id, edad, idDoctor;
+            string nombre, fechaIngreso;
+
+            size_t pos1 = linea.find(',');
+            size_t pos2 = linea.find(',', pos1 + 1);
+            size_t pos3 = linea.find(',', pos2 + 1);
+            size_t pos4 = linea.rfind(',');
+
+            id = stoi(linea.substr(0, pos1));
+            nombre = linea.substr(pos1 + 1, pos2 - pos1 - 1);
+            edad = stoi(linea.substr(pos2 + 1, pos3 - pos2 - 1));
+            idDoctor = stoi(linea.substr(pos3 + 1, pos4 - pos3 - 1));
+            fechaIngreso = linea.substr(pos4 + 1);
+
+            pacientes.push_back({id, nombre, edad, idDoctor, fechaIngreso});
+        }
+        archivoPacientes.close();
+    } else {
+        cout << "No se pudo abrir el archivo de pacientes.\n";
+    }
+    cargarHistoriales(); // Llamar a la función para cargar historiales clínicos
+}
+
+
+    // Función para cargar datos desde el archivo de historiales
+    void cargarHistoriales() {
+        ifstream archivoHistorial("historial_backup.txt");
+        if (archivoHistorial.is_open()) {
             string linea;
-            while (getline(archivoPacientes, linea))
-            {
-                int id, edad, idDoctor;
-                string nombre, fechaIngreso;
+            while (getline(archivoHistorial, linea)) {
+                int idPaciente, idHistorial;
+                string fecha, descripcion;
 
                 size_t pos1 = linea.find(',');
                 size_t pos2 = linea.find(',', pos1 + 1);
                 size_t pos3 = linea.find(',', pos2 + 1);
                 size_t pos4 = linea.rfind(',');
 
-                id = stoi(linea.substr(0, pos1));
-                nombre = linea.substr(pos1 + 1, pos2 - pos1 - 1);
-                edad = stoi(linea.substr(pos2 + 1, pos3 - pos2 - 1));
-                idDoctor = stoi(linea.substr(pos3 + 1, pos4 - pos3 - 1));
-                fechaIngreso = linea.substr(pos4 + 1);
+                idPaciente = stoi(linea.substr(0, pos1));
+                idHistorial = stoi(linea.substr(pos1 + 1, pos2 - pos1 - 1));
+                fecha = linea.substr(pos2 + 1, pos3 - pos2 - 1);
+                descripcion = linea.substr(pos3 + 1, pos4 - pos3 - 1);
 
-                pacientes.push_back({id, nombre, edad, idDoctor, fechaIngreso});
+                auto paciente = find_if(pacientes.begin(), pacientes.end(),
+                                    [idPaciente](const Paciente &p) { return p.id == idPaciente; });
+                if (paciente != pacientes.end()) {
+                    paciente->historiales.push_back({idHistorial, fecha, descripcion});
+                }
             }
-            archivoPacientes.close();
-        }
-        else
-        {
-            cout << "No se pudo abrir el archivo de pacientes.\n";
+            archivoHistorial.close();
+        } else {
+            cout << "No se pudo abrir el archivo de historiales clínicos.\n";
         }
     }
 
